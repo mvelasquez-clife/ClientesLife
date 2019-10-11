@@ -195,6 +195,7 @@ class ClientesLife extends Controller {
         $empresa = 11;
         $moneda = 1;
         $alias = DB::select("select rownum,sgum.de_alias alias from (select co_vendedor,fe_facturacion,co_empresa from ma_file_fisi_vent_c where co_cliente = ? and co_empresa = ? order by fe_facturacion desc) T join sg_usua_m sgum on T.co_vendedor = sgum.co_usuario and T.co_empresa = sgum.co_empresa_usuario where rownum = 1", [$ruc, $empresa]);
+        DB::statement("alter session set nls_date_format = 'dd/mm/yyyy'");
         if(count($alias) > 0) {
             $alias = $alias[0]->alias;
             DB::statement("call pack_venta.sm_activar_empresa(?)", [$alias]);
